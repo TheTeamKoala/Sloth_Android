@@ -56,25 +56,30 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_home) {
             Toast.makeText(getApplicationContext(), "First", Toast.LENGTH_SHORT).show();
         }
-        else if (id == R.id.nav_gallery) {
+        else if (id == R.id.nav_fridge) {
             Toast.makeText(getApplicationContext(), "Second", Toast.LENGTH_SHORT).show();
         }
-        else if (id == R.id.nav_slideshow) {
+        else if (id == R.id.nav_order) {
             Toast.makeText(getApplicationContext(), "Third", Toast.LENGTH_SHORT).show();
         }
-        else if (id == R.id.nav_manage) {
+        else if (id == R.id.nav_cameras) {
             Toast.makeText(getApplicationContext(), "Forth", Toast.LENGTH_SHORT).show();
         }
-        else if (id == R.id.nav_share) {
+        else if (id == R.id.nav_history) {
             Toast.makeText(getApplicationContext(), "Fifth", Toast.LENGTH_SHORT).show();
         }
-        else if (id == R.id.nav_send) {
+        else if (id == R.id.nav_help) {
             Toast.makeText(getApplicationContext(), "Sixth", Toast.LENGTH_SHORT).show();
         }
-
+        else if (id == R.id.nav_settings) {
+            Toast.makeText(getApplicationContext(), "Seventh", Toast.LENGTH_SHORT).show();
+        }
+        else if (id == R.id.nav_info) {
+            Toast.makeText(getApplicationContext(), "Eighth", Toast.LENGTH_SHORT).show();
+        }
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
 
