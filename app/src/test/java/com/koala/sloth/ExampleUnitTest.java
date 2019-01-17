@@ -2,7 +2,7 @@ package com.koala.sloth;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static junit.framework.Assert.assertEquals;
 
 public class ExampleUnitTest {
 
