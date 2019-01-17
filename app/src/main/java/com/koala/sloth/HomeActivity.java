@@ -1,5 +1,6 @@
 package com.koala.sloth;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -11,6 +12,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import com.koala.sloth.TabOrder.TabOrder;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -63,7 +66,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             Toast.makeText(getApplicationContext(), "Second", Toast.LENGTH_SHORT).show();
         }
         else if (id == R.id.nav_order) {
-            Toast.makeText(getApplicationContext(), "Third", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getApplicationContext(), TabOrder.class);
+            startActivity(intent);
         }
         else if (id == R.id.nav_cameras) {
             Toast.makeText(getApplicationContext(), "Forth", Toast.LENGTH_SHORT).show();
