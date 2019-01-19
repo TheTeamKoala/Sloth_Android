@@ -13,7 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.koala.sloth.TabOrder.OrderActivity;
+import com.koala.sloth.TabOrder.ActivityOrder;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -66,7 +66,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             Toast.makeText(getApplicationContext(), "Second", Toast.LENGTH_SHORT).show();
         }
         else if (id == R.id.nav_order) {
-            Intent intent = new Intent(getApplicationContext(), OrderActivity.class);
+            Intent intent = new Intent(getApplicationContext(), ActivityOrder.class);
             startActivity(intent);
         }
         else if (id == R.id.nav_cameras) {

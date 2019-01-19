@@ -17,16 +17,16 @@ import com.koala.sloth.R;
 
 import java.util.ArrayList;
 
-class ListView_Adapter extends BaseAdapter {
+class Category_ListView_Adapter extends BaseAdapter {
     private final Activity activity;
     private final LayoutInflater inflater;
 
-    private ArrayList<ListView_Item> itemList_first;
-    private ArrayList<ListView_Item> itemList_second;
+    private ArrayList<Category_ListView_Item> itemList_first;
+    private ArrayList<Category_ListView_Item> itemList_second;
 
 
 
-    ListView_Adapter(Activity activityP, ArrayList<ListView_Item> itemListP) {
+    Category_ListView_Adapter(Activity activityP, ArrayList<Category_ListView_Item> itemListP) {
         activity = activityP;
         inflater = (LayoutInflater) activityP.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -41,7 +41,7 @@ class ListView_Adapter extends BaseAdapter {
         }
     }
 
-    public ListView_Item getItem(int position) {
+    public Category_ListView_Item getItem(int position) {
         return itemList_first.get(position);
     }
     @SuppressLint("InflateParams")
@@ -50,15 +50,15 @@ class ListView_Adapter extends BaseAdapter {
         if (convertView!=null && ((TextView)convertView.findViewById(R.id.textView_name1)).getText().toString().equals(itemList_first.get(position).getName()))
             satirView = convertView;
         else
-            satirView = inflater.inflate(R.layout.activity_order_row, null);
+            satirView = inflater.inflate(R.layout.activity_order_category_row, null);
 
-        TextView textView_name1 = satirView.findViewById(R.id.textView_name1);
+        final TextView textView_name1 = satirView.findViewById(R.id.textView_name1);
         textView_name1.setText(itemList_first.get(position).getName());
 
         ImageView imageView_picture1 = satirView.findViewById(R.id.imageView_picture1);
         imageView_picture1.setImageDrawable(itemList_first.get(position).getPicture());
 
-        TextView textView_name2 = satirView.findViewById(R.id.textView_name2);
+        final TextView textView_name2 = satirView.findViewById(R.id.textView_name2);
         ImageView imageView_picture2 = satirView.findViewById(R.id.imageView_picture2);
         if (position < itemList_second.size()) {
             textView_name2.setText(itemList_second.get(position).getName());
@@ -75,6 +75,21 @@ class ListView_Adapter extends BaseAdapter {
 
         imageView_picture1.setLayoutParams(new FrameLayout.LayoutParams(temp.x/2, temp.x/3));
         imageView_picture2.setLayoutParams(new FrameLayout.LayoutParams(temp.x/2, temp.x/3));
+
+        imageView_picture1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (activity instanceof ActivityOrder)
+                    ((ActivityOrder) activity).setProductAdapter(textView_name1.getText().toString());
+            }
+        });
+        imageView_picture2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (activity instanceof ActivityOrder)
+                    ((ActivityOrder) activity).setProductAdapter(textView_name2.getText().toString());
+            }
+        });
 
         return satirView;
     }

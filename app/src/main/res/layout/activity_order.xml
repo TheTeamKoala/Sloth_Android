@@ -4,10 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TabOrder.OrderActivity">
+    tools:context=".TabOrder.ActivityOrder">
 
     <ListView
-        android:id="@+id/listView_orderCategories"
+        android:id="@+id/listView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:headerDividersEnabled="false"
+        android:footerDividersEnabled="false"/>
 </LinearLayout>
