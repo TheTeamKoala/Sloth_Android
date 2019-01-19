@@ -30,7 +30,7 @@ public class Product_ListView_Item {
     double getPrice() {
         return price;
     }
-    String priceUnitP() {
+    String getPriceUnit() {
         return priceUnit;
     }
     String getPhysicalUnit() {
