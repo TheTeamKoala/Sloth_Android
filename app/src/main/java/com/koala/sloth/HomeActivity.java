@@ -13,7 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.koala.sloth.TabOrder.ActivityFridge;
+import com.koala.sloth.TabFridge.ActivityFridge;
 import com.koala.sloth.TabOrder.ActivityOrder;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {

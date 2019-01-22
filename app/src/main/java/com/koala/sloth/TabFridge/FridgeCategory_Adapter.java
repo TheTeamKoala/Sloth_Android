@@ -1,4 +1,4 @@
-package com.koala.sloth.TabOrder;
+package com.koala.sloth.TabFridge;
 
 
 import android.annotation.SuppressLint;
@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.koala.sloth.R;
+import com.koala.sloth.TabFridge.FridgeCategory_Item;
 
 import java.util.ArrayList;
 public class FridgeCategory_Adapter extends BaseAdapter  {
@@ -61,7 +62,7 @@ public class FridgeCategory_Adapter extends BaseAdapter  {
             satirView = inflater.inflate(R.layout.activity_fridge_category_row, null);
 
         final TextView textView_name1 = satirView.findViewById(R.id.textView_name1);
-        textView_name1.setText(itemList_first.get(position).getName());
+        textView_name1.setText(itemList_first.get(position).getName() + " / " + itemList_first.get(position).getNumber());
 
         ImageView imageView_picture1 = satirView.findViewById(R.id.imageView_picture1);
         imageView_picture1.setImageDrawable(itemList_first.get(position).getPicture());
@@ -69,7 +70,7 @@ public class FridgeCategory_Adapter extends BaseAdapter  {
         final TextView textView_name2 = satirView.findViewById(R.id.textView_name2);
         ImageView imageView_picture2 = satirView.findViewById(R.id.imageView_picture2);
         if (position < itemList_second.size()) {
-            textView_name2.setText(itemList_second.get(position).getName());
+            textView_name2.setText(itemList_second.get(position).getName() + " / " + itemList_second.get(position).getNumber());
             imageView_picture2.setImageDrawable(itemList_second.get(position).getPicture());
         }
         else {

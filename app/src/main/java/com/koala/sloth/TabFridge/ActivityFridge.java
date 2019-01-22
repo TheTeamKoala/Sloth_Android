@@ -1,4 +1,4 @@
-package com.koala.sloth.TabOrder;
+package com.koala.sloth.TabFridge;
 
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.widget.ListView;
 import com.koala.sloth.Providers.FridgeProvider;
 import com.koala.sloth.R;
+
 import android.view.MenuItem;
 
 public class ActivityFridge extends AppCompatActivity {

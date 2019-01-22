@@ -30,11 +30,11 @@
             android:id="@+id/textView_name1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="top"
             android:background="#cc000000"
             android:padding="5dp"
             android:textColor="#ffffff"
-            android:textSize="20sp"/>
+            android:textSize="16sp" />
     </FrameLayout>
 
     <FrameLayout
@@ -57,10 +57,10 @@
             android:id="@+id/textView_name2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="top"
             android:background="#cc000000"
             android:padding="5dp"
             android:textColor="#ffffff"
-            android:textSize="20sp"/>
+            android:textSize="16sp" />
     </FrameLayout>
 </LinearLayout>
