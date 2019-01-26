@@ -21,8 +21,8 @@ class Category_ListView_Adapter extends BaseAdapter {
     private final Activity activity;
     private final LayoutInflater inflater;
 
-    private ArrayList<Category_ListView_Item> itemList_first;
-    private ArrayList<Category_ListView_Item> itemList_second;
+    private final ArrayList<Category_ListView_Item> itemList_first;
+    private final ArrayList<Category_ListView_Item> itemList_second;
 
 
 

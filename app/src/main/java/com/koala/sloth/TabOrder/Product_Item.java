@@ -2,23 +2,23 @@ package com.koala.sloth.TabOrder;
 
 import android.graphics.drawable.Drawable;
 
-public class Product_ListView_Item {
+public class Product_Item {
     private final Drawable picture;
     private final String name;
     private final double price;
     private final String priceUnit;
     private final String physicalUnit;
-    private int number;
+    private int quantity;
 
 
 
-    public Product_ListView_Item(Drawable pictureP, String nameP, double priceP,  String priceUnitP, String physicalUnitP) {
+    public Product_Item(Drawable pictureP, String nameP, double priceP, String priceUnitP, String physicalUnitP) {
         picture = pictureP;
         name = nameP;
         price = priceP;
         priceUnit = priceUnitP;
         physicalUnit = physicalUnitP;
-        number = 0;
+        quantity = 0;
     }
 
     Drawable getPicture() {
@@ -27,7 +27,7 @@ public class Product_ListView_Item {
     public String getName() {
         return name;
     }
-    double getPrice() {
+    public double getPrice() {
         return price;
     }
     String getPriceUnit() {
@@ -36,12 +36,19 @@ public class Product_ListView_Item {
     String getPhysicalUnit() {
         return physicalUnit;
     }
-    public int getNumber() {
-        return number;
+    public int getQuantity() {
+        return quantity;
     }
 
-    public void setNumber(int number) {
-        this.number = number;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    String getTotalPriceString() {
+        return quantity*price +" "+ priceUnit;
+    }
+    String getTotalPricePerUnit() {
+        return price +"/"+ physicalUnit;
     }
 
 }

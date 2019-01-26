@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".TabOrder.ActivityOrder">
 
     <ListView
@@ -12,4 +14,13 @@
         android:layout_height="match_parent"
         android:headerDividersEnabled="false"
         android:footerDividersEnabled="false"/>
-</LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingActionButton_basket"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_gravity="bottom|end"
+        android:padding="5dp"
+        android:layout_margin="50dp"
+        app:srcCompat="@drawable/shopping_basket" />
+</FrameLayout>

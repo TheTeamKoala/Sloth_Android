@@ -3,7 +3,6 @@ import android.app.Activity;
 import android.support.v4.content.ContextCompat;
 
 import com.koala.sloth.R;
-import com.koala.sloth.Shared.Constant;
 import com.koala.sloth.TabFridge.FridgeCategory_Item;
 
 import java.util.ArrayList;

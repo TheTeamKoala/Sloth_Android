@@ -10,10 +10,6 @@ import com.koala.sloth.R;
 import android.view.MenuItem;
 
 public class ActivityFridge extends AppCompatActivity {
-    private ListView listView;
-    private ActionBar actionBar;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +35,12 @@ public class ActivityFridge extends AppCompatActivity {
     }
 
     private void load() {
-        listView = findViewById(R.id.listView);
+        ListView listView = findViewById(R.id.listView);
         listView.setAdapter(new FridgeCategory_Adapter(ActivityFridge.this, FridgeProvider.getFridgeCategories(this)));
 
 
-        actionBar = getSupportActionBar();
-        if (actionBar!=null) {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar !=null) {
             actionBar.setTitle("Fridge");
 
             actionBar.setHomeButtonEnabled(true);

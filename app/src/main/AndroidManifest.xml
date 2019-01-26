@@ -11,8 +11,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".TabOrder.ActivityOrder"></activity>
-        <activity android:name=".TabFridge.ActivityFridge"></activity>
+
+        <activity
+            android:name=".TabOrder.ActivityOrder"
+            tools:ignore="InnerclassSeparator">
+        </activity>
+        <activity
+            android:name=".TabFridge.ActivityFridge"
+            tools:ignore="InnerclassSeparator">
+        </activity>
         <activity
             android:name=".HomeActivity"
             android:label="@string/app_name"
@@ -24,5 +31,4 @@
             </intent-filter>
         </activity>
     </application>
-
 </manifest>

@@ -16,8 +16,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.koala.sloth.R;
+import com.koala.sloth.Shared.Constant;
 
 import java.util.ArrayList;
 
@@ -27,12 +29,12 @@ class Product_ListView_Adapter extends BaseAdapter {
     private final Activity activity;
     private final LayoutInflater inflater;
 
-    private ArrayList<Product_ListView_Item> itemList_first;
-    private ArrayList<Product_ListView_Item> itemList_second;
+    private final ArrayList<Product_Item> itemList_first;
+    private final ArrayList<Product_Item> itemList_second;
 
 
 
-    Product_ListView_Adapter(Activity activityP, ArrayList<Product_ListView_Item> itemListP) {
+    Product_ListView_Adapter(Activity activityP, ArrayList<Product_Item> itemListP) {
         activity = activityP;
         inflater = (LayoutInflater) activityP.getSystemService(LAYOUT_INFLATER_SERVICE);
 
@@ -47,7 +49,7 @@ class Product_ListView_Adapter extends BaseAdapter {
         }
     }
 
-    public Product_ListView_Item getItem(int position) {
+    public Product_Item getItem(int position) {
         return itemList_first.get(position);
     }
     @SuppressLint("InflateParams")
@@ -59,7 +61,7 @@ class Product_ListView_Adapter extends BaseAdapter {
             satirView = inflater.inflate(R.layout.activity_order_product_row, null);
 
 
-        final Product_ListView_Item first_item= itemList_first.get(position);
+        final Product_Item first_item= itemList_first.get(position);
 
         TextView textView_name1 = satirView.findViewById(R.id.textView_name1);
         textView_name1.setText(first_item.getName());
@@ -81,7 +83,7 @@ class Product_ListView_Adapter extends BaseAdapter {
         ImageView imageView_picture2 = satirView.findViewById(R.id.imageView_picture2);
         TextView textView_pricePerUnit2 = satirView.findViewById(R.id.textView_pricePerUnit2);
         if (position < itemList_second.size()) {
-            final Product_ListView_Item second_item= itemList_second.get(position);
+            final Product_Item second_item= itemList_second.get(position);
 
             textView_name2.setText(second_item.getName());
             textView_pricePerUnit2.setText(String.valueOf(second_item.getPrice() +" "+ second_item.getPriceUnit() +"/"+ second_item.getPhysicalUnit()));
@@ -116,7 +118,7 @@ class Product_ListView_Adapter extends BaseAdapter {
         return itemList_first.size();
     }
 
-    private void showDialog(final Product_ListView_Item item) {
+    private void showDialog(final Product_Item item) {
         final Dialog dialog = new Dialog(activity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
@@ -133,7 +135,7 @@ class Product_ListView_Adapter extends BaseAdapter {
         textView_price.setText(String.valueOf("Price: "+ item.getPrice() +" "+ item.getPriceUnit()+"/"+ item.getPhysicalUnit()));
         textView_totalPrice.setText(String.valueOf("Total Price: "+ item.getPrice()));
 
-        NumberPicker numberPicker_order = layout.findViewById(R.id.numberPicker_order);
+        final NumberPicker numberPicker_order = layout.findViewById(R.id.numberPicker_order);
         numberPicker_order.setMinValue(1);
         numberPicker_order.setMaxValue(10);
         numberPicker_order.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
@@ -156,6 +158,11 @@ class Product_ListView_Adapter extends BaseAdapter {
         button_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                item.setQuantity(numberPicker_order.getValue());
+
+                Constant.addItemToBasket(item);
+
+                Toast.makeText(activity, "Your order has been added to your basket.", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
         });
