@@ -56,11 +56,15 @@ public class ActivityFridge extends AppCompatActivity {
 
 
         ActionBar actionBar = getSupportActionBar();
+
+
+
         if (actionBar !=null) {
             actionBar.setTitle("Fridge");
 
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setIcon(R.drawable.ic_menu_call);
         }
         Constant.basket = new ArrayList<>();
         FloatingActionButton floatingActionButton = findViewById(R.id.floatingActionButton_basket);
