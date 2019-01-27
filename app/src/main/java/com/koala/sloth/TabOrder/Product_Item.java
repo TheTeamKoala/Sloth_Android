@@ -21,7 +21,7 @@ public class Product_Item {
         quantity = 0;
     }
 
-    Drawable getPicture() {
+    public Drawable getPicture() {
         return picture;
     }
     public String getName() {
@@ -30,10 +30,10 @@ public class Product_Item {
     public double getPrice() {
         return price;
     }
-    String getPriceUnit() {
+    public String getPriceUnit() {
         return priceUnit;
     }
-    String getPhysicalUnit() {
+    public String getPhysicalUnit() {
         return physicalUnit;
     }
     public int getQuantity() {
@@ -44,10 +44,10 @@ public class Product_Item {
         this.quantity = quantity;
     }
 
-    String getTotalPriceString() {
+    public String getTotalPriceString() {
         return quantity*price +" "+ priceUnit;
     }
-    String getTotalPricePerUnit() {
+    public String getTotalPricePerUnit() {
         return price +"/"+ physicalUnit;
     }
 

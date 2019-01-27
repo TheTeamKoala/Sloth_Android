@@ -10,10 +10,12 @@ public class FridgeCategory_Item {
 
 
 
-        public FridgeCategory_Item(Drawable pictureP, String nameP) {
+
+    public FridgeCategory_Item(Drawable pictureP, String nameP) {
             picture = pictureP;
             name = nameP;
             number = 0;
+
         }
 
         Drawable getPicture() {
@@ -26,8 +28,8 @@ public class FridgeCategory_Item {
             return number;
         }
 
-        public void setNumber(int number) {
-            this.number = number;
+        public void setNumber(int quantity) {
+            this.number = quantity;
         }
 
 }
