@@ -9,6 +9,7 @@ import android.os.Bundle;
 
 import android.view.Display;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -37,13 +38,20 @@ public class ActivityFridge extends AppCompatActivity {
     public void onBackPressed() {
         cancelFromCategory();
     }
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.fridge, menu);
+
+        return true;
+    }
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
         if (id == android.R.id.home) {
             cancelFromCategory();
         }
-
+        else if (id == R.id.action_search) {
+            loadSearchScreen();
+        }
         return super.onOptionsItemSelected(item);
     }
     private void cancelFromCategory() {
@@ -64,7 +72,6 @@ public class ActivityFridge extends AppCompatActivity {
 
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setIcon(R.drawable.ic_menu_call);
         }
         Constant.basket = new ArrayList<>();
         FloatingActionButton floatingActionButton = findViewById(R.id.floatingActionButton_basket);
@@ -124,6 +131,12 @@ public class ActivityFridge extends AppCompatActivity {
         dialog.show();
     }
 
+    private void loadSearchScreen() {
+        Toast.makeText(getApplicationContext(), "SEARCH SCREEN WILL BE ACTIVATED", Toast.LENGTH_SHORT).show();
+
+
+
+    }
 
 
 
