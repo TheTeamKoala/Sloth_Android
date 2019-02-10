@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.koala.sloth.TabFridge.ActivityFridge;
+import com.koala.sloth.TabHistory.ActivityHistory;
 import com.koala.sloth.TabOrder.ActivityOrder;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -27,8 +28,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -75,7 +75,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             Toast.makeText(getApplicationContext(), "Forth", Toast.LENGTH_SHORT).show();
         }
         else if (id == R.id.nav_history) {
-            Toast.makeText(getApplicationContext(), "Fifth", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getApplicationContext(), ActivityHistory.class);
+            startActivity(intent);
         }
         else if (id == R.id.nav_help) {
             Toast.makeText(getApplicationContext(), "Sixth", Toast.LENGTH_SHORT).show();
