@@ -3,6 +3,7 @@ import android.app.Activity;
 import android.support.v4.content.ContextCompat;
 
 import com.koala.sloth.R;
+import com.koala.sloth.Shared.Constant;
 import com.koala.sloth.TabFridge.FridgeCategory_Item;
 import com.koala.sloth.TabOrder.Product_Item;
 
@@ -90,6 +91,18 @@ public class FridgeProvider {
 
         return arrayList_item;
     }
+
+    public static ArrayList<FridgeCategory_Item>searchItem(Activity activity, String text) {
+        ArrayList<FridgeCategory_Item> arrayList_item = getFridgeCategories(activity);
+
+        ArrayList<FridgeCategory_Item> resultList = new ArrayList<>();
+        for (FridgeCategory_Item fridgeItem: arrayList_item) {
+            if (fridgeItem.getName().toLowerCase().contains(text.toLowerCase()))
+                resultList.add(fridgeItem);
+        }
+        return resultList;
+    }
+
 
     public static ArrayList<Product_Item>getProducts(Activity activity) {
         ArrayList<Product_Item> arrayList_item = new ArrayList<>();
