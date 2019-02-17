@@ -15,6 +15,8 @@ public class Constant {
     public static final String ORDER_CATEGORY_JUNK_FOOD = "Junk Food";
     public static final String ORDER_CATEGORY_CLEANING = "Cleaning";
 
+    public static String currentOrderCategory = "";
+
     public static ArrayList<Product_Item> basket;
     public static void addItemToBasket(Product_Item newItem) {
         for (Product_Item item: basket) {

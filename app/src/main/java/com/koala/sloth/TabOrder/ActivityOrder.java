@@ -8,10 +8,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -38,11 +40,19 @@ public class ActivityOrder extends AppCompatActivity {
     public void onBackPressed() {
         cancelFromCategory();
     }
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.order, menu);
+
+        return true;
+    }
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
         if (id == android.R.id.home) {
             cancelFromCategory();
+        }
+        else if (id == R.id.menu_find) {
+            showDialog_Find();
         }
 
         return super.onOptionsItemSelected(item);
@@ -116,7 +126,6 @@ public class ActivityOrder extends AppCompatActivity {
             }
         });
 
-
         Display display = getWindowManager().getDefaultDisplay();
         Point temp = new Point();
         display.getSize(temp);
@@ -126,9 +135,54 @@ public class ActivityOrder extends AppCompatActivity {
         dialog.setContentView(layout);
         dialog.show();
     }
+    private void showDialog_Find() {
+        final Dialog dialog = new Dialog(this);
+        dialog.setTitle("My Basket");
+        dialog.setCancelable(true);
+
+        final LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        assert inflater != null;
+        final View layout = inflater.inflate(R.layout.dialog_order_find, (ViewGroup) findViewById(R.id.linearLayout_orderFind));
+
+        final EditText editText = layout.findViewById(R.id.editText_orderfind);
+        Button button_cancel = layout.findViewById(R.id.button_cancel);
+        button_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        Button button_ok = layout.findViewById(R.id.button_ok);
+        button_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String text = editText.getText().toString();
+                if (text.length()==0) {
+                    Toast.makeText(getApplicationContext(), "Please enter something!", Toast.LENGTH_SHORT).show();
+
+                    return;
+                }
+
+                listView.setAdapter(new Product_ListView_Adapter(ActivityOrder.this, OrderProvider.findProducts(ActivityOrder.this, editText.getText().toString())));
+
+                dialog.dismiss();
+            }
+        });
+
+        Display display = getWindowManager().getDefaultDisplay();
+        Point temp = new Point();
+        display.getSize(temp);
+
+        editText.setLayoutParams(new LinearLayout.LayoutParams((int)(temp.x/1.25), ViewGroup.LayoutParams.WRAP_CONTENT));
+
+        dialog.setContentView(layout);
+        dialog.show();
+    }
 
     public void setProductAdapter(String categoryName) {
         listView.setAdapter(new Product_ListView_Adapter(ActivityOrder.this, OrderProvider.getProducts(this, categoryName)));
+        Constant.currentOrderCategory = categoryName;
 
         if (actionBar!=null)
             actionBar.setTitle(categoryName);

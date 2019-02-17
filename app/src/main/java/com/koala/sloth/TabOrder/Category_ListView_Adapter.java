@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.koala.sloth.R;
+import com.koala.sloth.Shared.Constant;
 
 import java.util.ArrayList;
 
@@ -39,6 +40,8 @@ class Category_ListView_Adapter extends BaseAdapter {
             else
                 itemList_second.add(itemListP.get(i));
         }
+
+        Constant.currentOrderCategory = null;
     }
 
     public Category_ListView_Item getItem(int position) {
