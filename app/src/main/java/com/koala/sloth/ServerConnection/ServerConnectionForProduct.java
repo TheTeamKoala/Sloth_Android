@@ -162,4 +162,60 @@ public class ServerConnectionForProduct {
 
         queue.add(updRequest);
     }
+
+    public void returnAllArray(RequestQueue queue){
+
+        JsonArrayRequest getRequest = new JsonArrayRequest(Method.GET, url, null,
+                new Response.Listener<JSONArray>()
+                {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        Log.d("Response", response.toString());
+                        try {
+                            JSONObject obj = (JSONObject) response.get(0);
+                            String typr = (String) obj.get("type");
+                            Log.d("object",obj.toString());
+                            Log.d("AAAAAAA",response.length()+"");
+
+                            for(int i=0 ; i<response.length();i++){
+                                JSONObject object = (JSONObject) response.get(i);
+                                Product product = new Product();
+                                String type = (String) obj.get("type");
+                                product.setType(type);
+                                String date = (String) obj.get("firstDate");
+                                product.setFirstDate(date);
+                                Boolean bool = (Boolean) obj.get("inTheFridge");
+                                product.setBool(bool);
+                                int price = (Integer) obj.get("fiyat");
+                                product.setPrice(price);
+                                products.add(product);
+
+                            }
+
+                            for(int i =0;i<response.length();i++){
+                                Log.d("type",products.get(i).type);
+                                Log.d("firstDate",products.get(i).firstDate);
+                                Log.d("inTheFridge",products.get(i).bool+"");
+                                Log.d("fiyat",products.get(i).price+"");
+
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Error.Response", String.valueOf(error));
+                    }
+                }
+        );
+
+// add it to the RequestQueue
+        queue.add(getRequest);
+    }
+
 }
