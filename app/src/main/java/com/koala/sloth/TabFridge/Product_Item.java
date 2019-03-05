@@ -1,4 +1,4 @@
-package com.koala.sloth.TabOrder;
+package com.koala.sloth.TabFridge;
 
 import android.graphics.drawable.Drawable;
 

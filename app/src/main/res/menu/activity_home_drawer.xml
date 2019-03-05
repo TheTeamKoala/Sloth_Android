@@ -50,6 +50,11 @@
                 android:icon="@drawable/ic_menu_info"
                 android:title="Info"
                 tools:ignore="HardcodedText" />
+            <item
+                android:id="@+id/loadExampleDatabase"
+                android:icon="@drawable/load"
+                android:title="Load Example DB"
+                tools:ignore="HardcodedText" />
         </menu>
     </item>
 </menu>

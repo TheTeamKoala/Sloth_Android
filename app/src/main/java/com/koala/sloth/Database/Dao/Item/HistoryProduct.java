@@ -1,18 +1,16 @@
-package com.koala.sloth.TabHistory;
+package com.koala.sloth.Database.Dao.Item;
 
-import java.util.Date;
-
-public class History_Item {
+public class HistoryProduct {
     private final String name;
-    private final double price;
+    private double price;
     private final String priceUnit;
     private final String physicalUnit;
     private final int quantity;
-    private final Date date;
+    private final long date;
 
 
 
-    public History_Item(String nameP, double priceP, String priceUnitP, String physicalUnitP, int quantityP, Date dateP) {
+    public HistoryProduct(String nameP, double priceP, String priceUnitP, String physicalUnitP, int quantityP, long dateP) {
         name = nameP;
         price = priceP;
         priceUnit = priceUnitP;
@@ -36,7 +34,7 @@ public class History_Item {
     public int getQuantity() {
         return quantity;
     }
-    public Date getDate() {
+    public long getDate() {
         return date;
     }
 

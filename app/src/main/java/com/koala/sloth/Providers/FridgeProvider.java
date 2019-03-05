@@ -4,7 +4,7 @@ import android.support.v4.content.ContextCompat;
 
 import com.koala.sloth.R;
 import com.koala.sloth.TabFridge.FridgeCategory_Item;
-import com.koala.sloth.TabOrder.Product_Item;
+import com.koala.sloth.TabFridge.Product_Item;
 
 import java.util.ArrayList;
 
