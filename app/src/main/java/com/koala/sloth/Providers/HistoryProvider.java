@@ -1,13 +1,8 @@
 package com.koala.sloth.Providers;
 
 import android.app.Activity;
-import android.support.v4.content.ContextCompat;
 
-import com.koala.sloth.R;
-import com.koala.sloth.Shared.Constant;
 import com.koala.sloth.TabHistory.History_Item;
-import com.koala.sloth.TabOrder.Category_ListView_Item;
-import com.koala.sloth.TabOrder.Product_Item;
 
 import java.util.ArrayList;
 import java.util.Date;

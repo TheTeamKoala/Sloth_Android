@@ -16,14 +16,16 @@
         android:gravity="center"
         android:textColor="#000000"
         android:textSize="20sp"
-        android:text="Please enter what you want to search:" />
+        android:text="Please enter what you want to search:"
+        tools:ignore="HardcodedText" />
 
     <EditText
         android:id="@+id/editText_orderfind"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="text"/>
+        android:inputType="text"
+        tools:ignore="Autofill,LabelFor" />
 
     <LinearLayout
         android:id="@+id/linearLayout_buttons"
@@ -38,7 +40,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Cancel" />
+            android:text="Cancel"
+            tools:ignore="HardcodedText" />
 
         <Button
             android:id="@+id/button_ok"
@@ -46,6 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Ok" />
+            android:text="Ok"
+            tools:ignore="HardcodedText" />
     </LinearLayout>
 </LinearLayout>

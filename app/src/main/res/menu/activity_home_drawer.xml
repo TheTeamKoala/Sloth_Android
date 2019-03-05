@@ -8,39 +8,48 @@
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_menu_home"
-            android:title="Home" />
+            android:title="Home"
+            tools:ignore="HardcodedText" />
         <item
             android:id="@+id/nav_fridge"
             android:icon="@drawable/ic_menu_fridge"
-            android:title="Fridge" />
+            android:title="Fridge"
+            tools:ignore="HardcodedText" />
         <item
             android:id="@+id/nav_order"
             android:icon="@drawable/ic_menu_call"
-            android:title="Order" />
+            android:title="Order"
+            tools:ignore="HardcodedText" />
         <item
             android:id="@+id/nav_cameras"
             android:icon="@drawable/ic_menu_camera"
-            android:title="Cameras" />
+            android:title="Cameras"
+            tools:ignore="HardcodedText" />
         <item
             android:id="@+id/nav_history"
             android:icon="@drawable/ic_menu_history"
-            android:title="History" />
+            android:title="History"
+            tools:ignore="HardcodedText" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="Communicate"
+        tools:ignore="HardcodedText">
         <menu>
             <item
                 android:id="@+id/nav_help"
                 android:icon="@drawable/ic_menu_help"
-                android:title="Help and Feedback" />
+                android:title="Help and Feedback"
+                tools:ignore="HardcodedText" />
             <item
                 android:id="@+id/nav_settings"
                 android:icon="@drawable/ic_menu_settings"
-                android:title="Settings" />
+                android:title="Settings"
+                tools:ignore="HardcodedText" />
             <item
                 android:id="@+id/nav_info"
                 android:icon="@drawable/ic_menu_info"
-                android:title="Info" />
+                android:title="Info"
+                tools:ignore="HardcodedText" />
         </menu>
     </item>
 </menu>

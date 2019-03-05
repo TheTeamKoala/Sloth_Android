@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.koala.sloth.Providers.HistoryProvider;
 import com.koala.sloth.R;
-import com.koala.sloth.TabOrder.Category_ListView_Item;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

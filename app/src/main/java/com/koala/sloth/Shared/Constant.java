@@ -1,6 +1,6 @@
 package com.koala.sloth.Shared;
 
-import com.koala.sloth.TabOrder.Product_Item;
+import com.koala.sloth.Database.Dao.Item.OrderProduct;
 
 import java.util.ArrayList;
 
@@ -17,9 +17,9 @@ public class Constant {
 
     public static String currentOrderCategory = "";
 
-    public static ArrayList<Product_Item> basket;
-    public static void addItemToBasket(Product_Item newItem) {
-        for (Product_Item item: basket) {
+    public static ArrayList<OrderProduct> basket;
+    public static void addItemToBasket(OrderProduct newItem) {
+        for (OrderProduct item: basket) {
             if (item.getName().equals(newItem.getName())) {
                 item.setQuantity(newItem.getQuantity());
                 return;
@@ -29,8 +29,8 @@ public class Constant {
         basket.add(newItem);
     }
     public static void removeItemToBasket(String itemName) {
-        Product_Item item = null;
-        for (Product_Item product_item: basket) {
+        OrderProduct item = null;
+        for (OrderProduct product_item: basket) {
             if (product_item.getName().equals(itemName)) {
                 item = product_item;
                 break;
@@ -42,7 +42,7 @@ public class Constant {
     }
     public static int getTotalQuantity() {
         int totalQuantity = 0;
-        for (Product_Item product_item: basket) {
+        for (OrderProduct product_item: basket) {
             totalQuantity = totalQuantity + product_item.getQuantity();
         }
 
@@ -50,7 +50,7 @@ public class Constant {
     }
     public static double getTotalPrice() {
         double totalPrice = 0;
-        for (Product_Item product_item: basket) {
+        for (OrderProduct product_item: basket) {
             totalPrice = totalPrice + product_item.getQuantity()*product_item.getPrice();
         }
 

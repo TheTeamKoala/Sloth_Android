@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import com.koala.sloth.Providers.FridgeProvider;
+
 import com.koala.sloth.R;
 import com.koala.sloth.Shared.Constant;
 
@@ -52,7 +52,8 @@ public class ActivityFridge extends AppCompatActivity {
 
     private void load() {
         ListView listView = findViewById(R.id.listView);
-        listView.setAdapter(new FridgeCategory_Adapter(ActivityFridge.this, FridgeProvider.getFridgeCategories(this) , FridgeProvider.getProducts(this)));
+        //TODO HAŞİM HELP
+        //listView.setAdapter(new FridgeCategory_Adapter(ActivityFridge.this, FridgeProvider.getFridgeCategories(this) , FridgeProvider.getProducts(this)));
 
 
         ActionBar actionBar = getSupportActionBar();

@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.koala.sloth.Database.Dao.OrderProductDao;
 import com.koala.sloth.Providers.OrderProvider;
 import com.koala.sloth.R;
 import com.koala.sloth.Shared.Constant;
@@ -164,7 +165,8 @@ public class ActivityOrder extends AppCompatActivity {
                     return;
                 }
 
-                listView.setAdapter(new Product_ListView_Adapter(ActivityOrder.this, OrderProvider.findProducts(ActivityOrder.this, editText.getText().toString())));
+                OrderProductDao ordersDao = new OrderProductDao(getApplicationContext());
+                listView.setAdapter(new Product_ListView_Adapter(ActivityOrder.this, ordersDao.findOrderProductList(editText.getText().toString())));
 
                 dialog.dismiss();
             }
@@ -181,7 +183,8 @@ public class ActivityOrder extends AppCompatActivity {
     }
 
     public void setProductAdapter(String categoryName) {
-        listView.setAdapter(new Product_ListView_Adapter(ActivityOrder.this, OrderProvider.getProducts(this, categoryName)));
+        OrderProductDao ordersDao = new OrderProductDao(getApplicationContext());
+        listView.setAdapter(new Product_ListView_Adapter(ActivityOrder.this, ordersDao.getOrderProductList(categoryName)));
         Constant.currentOrderCategory = categoryName;
 
         if (actionBar!=null)
