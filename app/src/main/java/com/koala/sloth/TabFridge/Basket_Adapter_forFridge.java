@@ -16,7 +16,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.koala.sloth.Database.Dao.Item.OrderProduct;
+import com.koala.sloth.Database.Dao.Item.Product;
 import com.koala.sloth.R;
 import com.koala.sloth.Shared.Constant;
 
@@ -26,7 +26,7 @@ class Basket_Adapter_forFridge extends BaseAdapter {
     private final Activity activity;
     private final LayoutInflater inflater;
 
-    private final ArrayList<OrderProduct> itemList;
+    private final ArrayList<Product> itemList;
 
 
 
@@ -36,7 +36,7 @@ class Basket_Adapter_forFridge extends BaseAdapter {
         itemList = Constant.basket;
     }
 
-    public OrderProduct getItem(int position) {
+    public Product getItem(int position) {
         return itemList.get(position);
     }
     @SuppressLint("InflateParams")
@@ -78,7 +78,7 @@ class Basket_Adapter_forFridge extends BaseAdapter {
         }
 
 
-        final OrderProduct item = itemList.get(position-1);
+        final Product item = itemList.get(position-1);
 
         ImageView imageView_picture = satirView.findViewById(R.id.imageView_picture);
         imageView_picture.setImageBitmap(item.getPicture());
