@@ -20,9 +20,9 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.koala.sloth.Database.Dao.HistoryProductDao;
-import com.koala.sloth.Database.Dao.Item.OrderProduct;
-import com.koala.sloth.Database.Dao.OrderProductDao;
+import com.koala.sloth.Database.Dao.OrdersDao;
+import com.koala.sloth.Database.Dao.Item.Product;
+import com.koala.sloth.Database.Dao.ProductDao;
 import com.koala.sloth.R;
 import com.koala.sloth.Shared.Constant;
 
@@ -125,10 +125,10 @@ public class ActivityOrder extends AppCompatActivity {
             public void onClick(View v) {
                 Toast.makeText(ActivityOrder.this, "Your order is on the way!", Toast.LENGTH_SHORT).show();
 
-                HistoryProductDao historyProductDao = new HistoryProductDao(getApplicationContext());
+                OrdersDao ordersDao = new OrdersDao(getApplicationContext());
                 for (int i=0; i<Constant.basket.size(); i++) {
-                    OrderProduct orderProduct = Constant.basket.get(i);
-                    historyProductDao.addHistoryProduct(orderProduct.getName(), orderProduct.getPrice(), orderProduct.getPriceUnit(), orderProduct.getPhysicalUnit(), orderProduct.getQuantity(), System.currentTimeMillis());
+                    Product orderProduct = Constant.basket.get(i);
+                    ordersDao.addOrder(orderProduct.getId(), orderProduct.getQuantity(), System.currentTimeMillis());
                 }
 
                 Constant.basket = new ArrayList<>();
@@ -141,7 +141,7 @@ public class ActivityOrder extends AppCompatActivity {
         Point temp = new Point();
         display.getSize(temp);
 
-        listView_basket.setLayoutParams(new LinearLayout.LayoutParams((int)(temp.x/1.25), (int)(temp.y/1.25)));
+        listView_basket.setLayoutParams(new LinearLayout.LayoutParams((int)(temp.x/1.25), (int)(temp.y/1.50)));
 
         dialog.setContentView(layout);
         dialog.show();
@@ -175,7 +175,7 @@ public class ActivityOrder extends AppCompatActivity {
                     return;
                 }
 
-                OrderProductDao ordersDao = new OrderProductDao(getApplicationContext());
+                ProductDao ordersDao = new ProductDao(getApplicationContext());
                 listView.setAdapter(new Product_ListView_Adapter(ActivityOrder.this, ordersDao.findOrderProductList(editText.getText().toString())));
 
                 dialog.dismiss();
@@ -208,7 +208,7 @@ public class ActivityOrder extends AppCompatActivity {
     }
 
     public void setProductAdapter(String categoryName) {
-        OrderProductDao ordersDao = new OrderProductDao(getApplicationContext());
+        ProductDao ordersDao = new ProductDao(getApplicationContext());
         listView.setAdapter(new Product_ListView_Adapter(ActivityOrder.this, ordersDao.getOrderProductList(categoryName)));
         Constant.currentOrderCategory = categoryName;
 

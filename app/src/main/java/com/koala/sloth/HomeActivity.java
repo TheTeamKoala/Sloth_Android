@@ -13,8 +13,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.koala.sloth.Database.Dao.HistoryProductDao;
-import com.koala.sloth.Database.Dao.OrderProductDao;
+import com.koala.sloth.Database.Dao.OrdersDao;
+import com.koala.sloth.Database.Dao.ProductDao;
 import com.koala.sloth.TabFridge.ActivityFridge;
 import com.koala.sloth.TabHistory.ActivityHistory;
 import com.koala.sloth.TabOrder.ActivityOrder;
@@ -90,8 +90,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             Toast.makeText(getApplicationContext(), "Eighth", Toast.LENGTH_SHORT).show();
         }
         else if (id == R.id.loadExampleDatabase) {
-            new OrderProductDao(getApplicationContext()).implementExampleDatabase();
-            new HistoryProductDao(getApplicationContext()).implementExampleDatabase();
+            new ProductDao(getApplicationContext()).implementExampleDatabase();
+            new OrdersDao(getApplicationContext()).implementExampleDatabase();
         }
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
