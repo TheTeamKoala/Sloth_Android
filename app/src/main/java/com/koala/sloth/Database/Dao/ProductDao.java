@@ -82,7 +82,44 @@ public class ProductDao {
 
         return product;
     }
+    public ArrayList<Product> getProductList() {
+        ArrayList<Product> arrayList = new ArrayList<>();
 
+        SQLiteDatabase db = DatabaseHelper.getInstance(context).getReadableDatabase();
+        Cursor  cursor = db.rawQuery("SELECT * FROM PRODUCT ", new String[] {});
+
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
+                int id = cursor.getInt(cursor.getColumnIndex("ID"));
+                String name = cursor.getString(cursor.getColumnIndex("NAME"));
+                String brand = cursor.getString(cursor.getColumnIndex("BRAND"));
+                String category = cursor.getString(cursor.getColumnIndex("CATEGORY"));
+                float price = cursor.getFloat(cursor.getColumnIndex("PRICE"));
+                String priceUnit = cursor.getString(cursor.getColumnIndex("PRICE_UNIT"));
+                String physicalUnit = cursor.getString(cursor.getColumnIndex("PHYSICAL_UNIT"));
+                long firstDate = cursor.getLong(cursor.getColumnIndex("FIRST_DATE"));
+                int inFridge = cursor.getInt(cursor.getColumnIndex("IN_FRIDGE"));
+                byte picture[] = cursor.getBlob(cursor.getColumnIndex("PICTURE"));
+
+                arrayList.add(new Product(id, name, brand, category, price, priceUnit, physicalUnit, firstDate, inFridge, null));
+
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        db.close();
+
+        return arrayList;
+    }
+
+    public void addToFridge(int id1){
+        SQLiteDatabase db = DatabaseHelper.getInstance(context).getReadableDatabase();
+        db.execSQL("UPDATE PRODUCT SET IN_FRIDGE=1  WHERE id="+id1);
+    }
+    public void removeFromFridge(int id1){
+        SQLiteDatabase db = DatabaseHelper.getInstance(context).getReadableDatabase();
+        db.execSQL("UPDATE PRODUCT SET IN_FRIDGE=0  WHERE id="+id1);
+    }
     public ArrayList<Product> getOrderProductList(String categoryName) {
         ArrayList<Product> arrayList = new ArrayList<>();
 
@@ -147,7 +184,7 @@ public class ProductDao {
         return arrayList;
     }
 
-    public void implementExampleDatabase() {    // ORNEK BIR DATABASE OLUSTURMAK ICIN SADECE BIR KERE CAGRILDI.
+   /* public void implementExampleDatabase() {    // ORNEK BIR DATABASE OLUSTURMAK ICIN SADECE BIR KERE CAGRILDI.
         addOrderProduct("Apple", null,"Fruit", 2.00, "TL", "kg", 1551615240120L, false, getDrawableAsByteArray(R.drawable.apple));
         addOrderProduct("Orange", null,"Fruit", 2.25, "TL", "kg", 1551615240120L, false, getDrawableAsByteArray(R.drawable.orange));
         addOrderProduct("Banana", null,"Fruit", 2.50, "TL", "kg", 1551615240120L, false, getDrawableAsByteArray(R.drawable.banana));
@@ -195,8 +232,9 @@ public class ProductDao {
         addOrderProduct("Soap Orchide","Hobby ", "Cleaning", 7.75, "TL", "piece", 1551615240120L, false, getDrawableAsByteArray(R.drawable.hobby_orchide));
         addOrderProduct("Toilet Paper","Papia", "Cleaning", 8.00, "TL", "piece", 1551615240120L, false, getDrawableAsByteArray(R.drawable.toilet_paper_papia));
         addOrderProduct("Toilet Paper", "Solo","Cleaning", 8.25, "TL", "piece", 1551615240120L, false, getDrawableAsByteArray(R.drawable.toilet_paper_solo));
-    }
 
+    }
+    */
 
     private byte[] getDrawableAsByteArray(int drawable) {
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), drawable);

@@ -25,7 +25,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 
-public class ActivityFridge extends AppCompatActivity {
+public class  ActivityFridge extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

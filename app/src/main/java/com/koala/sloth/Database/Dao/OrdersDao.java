@@ -45,7 +45,7 @@ public class OrdersDao {
                 int quantity = cursor.getInt(cursor.getColumnIndex("QUANTITY"));
                 long date = cursor.getLong(cursor.getColumnIndex("DATE"));
 
-                arrayList.add(new Order(productId, quantity, date, productDao.getOrderById(productId)));
+                arrayList.add(new Order(productId, quantity, date,null));
 
                 cursor.moveToNext();
             }

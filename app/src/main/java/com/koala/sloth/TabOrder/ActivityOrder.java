@@ -20,17 +20,25 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.koala.sloth.Database.Dao.OrdersDao;
 import com.koala.sloth.Database.Dao.Item.Product;
 import com.koala.sloth.Database.Dao.ProductDao;
 import com.koala.sloth.R;
 import com.koala.sloth.Shared.Constant;
+import com.koala.sloth.ServerConnection.*;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 public class ActivityOrder extends AppCompatActivity {
     private ListView listView;
     private ActionBar actionBar;
+    private ServerConnectionForOrder serverConnectionForOrder ;
+    RequestQueue queue ;
 
 
 
@@ -38,7 +46,8 @@ public class ActivityOrder extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
-
+        queue = Volley.newRequestQueue(this);
+        serverConnectionForOrder = new ServerConnectionForOrder(queue);
         load();
     }
     public void onBackPressed() {
@@ -127,8 +136,25 @@ public class ActivityOrder extends AppCompatActivity {
 
                 OrdersDao ordersDao = new OrdersDao(getApplicationContext());
                 for (int i=0; i<Constant.basket.size(); i++) {
+
                     Product orderProduct = Constant.basket.get(i);
-                    ordersDao.addOrder(orderProduct.getId(), orderProduct.getQuantity(), System.currentTimeMillis());
+                    Integer id = orderProduct.getId();
+                    Integer quantitiy =orderProduct.getQuantity();
+                    long date =  System.currentTimeMillis();
+                    ordersDao.addOrder(id,quantitiy ,date);
+
+                    JSONObject post = new JSONObject();
+
+                    String newe[]={"product_ID","quantity","date"};
+                    try {
+                        post.accumulate("product_ID",id);
+                        post.accumulate("quantity",quantitiy);
+                        post.accumulate("date",date);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    serverConnectionForOrder.add(post);
                 }
 
                 Constant.basket = new ArrayList<>();
