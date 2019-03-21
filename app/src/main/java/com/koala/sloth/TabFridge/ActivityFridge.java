@@ -9,14 +9,12 @@ import android.os.Bundle;
 
 import android.view.Display;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import com.koala.sloth.Providers.FridgeProvider;
+
 import com.koala.sloth.R;
 import com.koala.sloth.Shared.Constant;
 
@@ -28,7 +26,6 @@ import java.util.ArrayList;
 
 
 public class ActivityFridge extends AppCompatActivity {
-    private ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,20 +37,13 @@ public class ActivityFridge extends AppCompatActivity {
     public void onBackPressed() {
         cancelFromCategory();
     }
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.fridge, menu);
-
-        return true;
-    }
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
         if (id == android.R.id.home) {
             cancelFromCategory();
         }
-        else if (id == R.id.action_search) {
-            loadSearchScreen();
-        }
+
         return super.onOptionsItemSelected(item);
     }
     private void cancelFromCategory() {
@@ -61,8 +51,9 @@ public class ActivityFridge extends AppCompatActivity {
     }
 
     private void load() {
-        listView = findViewById(R.id.listView);
-        listView.setAdapter(new FridgeCategory_Adapter(ActivityFridge.this, FridgeProvider.getFridgeCategories(this) , FridgeProvider.getProducts(this)));
+        ListView listView = findViewById(R.id.listView);
+        //TODO HAŞİM HELP
+        //listView.setAdapter(new FridgeCategory_Adapter(ActivityFridge.this, FridgeProvider.getFridgeCategories(this) , FridgeProvider.getProducts(this)));
 
 
         ActionBar actionBar = getSupportActionBar();
@@ -74,6 +65,7 @@ public class ActivityFridge extends AppCompatActivity {
 
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setIcon(R.drawable.ic_menu_call);
         }
         Constant.basket = new ArrayList<>();
         FloatingActionButton floatingActionButton = findViewById(R.id.floatingActionButton_basket);
@@ -133,50 +125,7 @@ public class ActivityFridge extends AppCompatActivity {
         dialog.show();
     }
 
-    private void loadSearchScreen() {
-        final Dialog dialog = new Dialog(this);
-        dialog.setTitle("My Basket");
-        dialog.setCancelable(true);
 
-        final LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        assert inflater != null;
-        final View layout = inflater.inflate(R.layout.dialog_order_find, (ViewGroup) findViewById(R.id.linearLayout_orderFind));
-
-        final EditText editText = layout.findViewById(R.id.editText_orderfind);
-        Button button_cancel = layout.findViewById(R.id.button_cancel);
-        button_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
-        Button button_ok = layout.findViewById(R.id.button_ok);
-        button_ok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String text = editText.getText().toString();
-                if (text.length()==0) {
-                    Toast.makeText(getApplicationContext(), "Please enter something!", Toast.LENGTH_SHORT).show();
-
-                    return;
-                }
-
-                listView.setAdapter(new FridgeCategory_Adapter(ActivityFridge.this, FridgeProvider.searchItem(ActivityFridge.this, editText.getText().toString()) , FridgeProvider.getProducts(ActivityFridge.this)));
-
-                dialog.dismiss();
-            }
-        });
-
-        Display display = getWindowManager().getDefaultDisplay();
-        Point temp = new Point();
-        display.getSize(temp);
-
-        editText.setLayoutParams(new LinearLayout.LayoutParams((int)(temp.x/1.25), ViewGroup.LayoutParams.WRAP_CONTENT));
-
-        dialog.setContentView(layout);
-        dialog.show();
-    }
 
 
 }

@@ -1,6 +1,6 @@
 package com.koala.sloth.TabFridge;
 
-import com.koala.sloth.TabOrder.Product_Item;
+import com.koala.sloth.Database.Dao.Item.Product;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
@@ -33,11 +33,11 @@ class FridgeCategory_Adapter extends BaseAdapter  {
 
     private final ArrayList<FridgeCategory_Item> itemList_first;
     private final ArrayList<FridgeCategory_Item> itemList_second;
-    private final ArrayList<Product_Item> itemList_first2;
-    private final ArrayList<Product_Item> itemList_second2;
+    private final ArrayList<Product> itemList_first2;
+    private final ArrayList<Product> itemList_second2;
 
 
-    FridgeCategory_Adapter(Activity activityP, ArrayList<FridgeCategory_Item> itemListP,ArrayList<Product_Item> itemListP2) {
+    FridgeCategory_Adapter(Activity activityP, ArrayList<FridgeCategory_Item> itemListP,ArrayList<Product> itemListP2) {
         activity = activityP;
         inflater = (LayoutInflater) activityP.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -79,7 +79,7 @@ class FridgeCategory_Adapter extends BaseAdapter  {
         else
             satirView = inflater.inflate(R.layout.activity_fridge_category_row, null);
 
-        final Product_Item first_item= itemList_first2.get(position);
+        final Product first_item= itemList_first2.get(position);
 
         final TextView textView_name1 = satirView.findViewById(R.id.textView_name1);
         textView_name1.setText(String.valueOf(itemList_first.get(position).getName() + " / " + itemList_first.get(position).getNumber()));
@@ -96,7 +96,7 @@ class FridgeCategory_Adapter extends BaseAdapter  {
         final TextView textView_name2 = satirView.findViewById(R.id.textView_name2);
         ImageView imageView_picture2 = satirView.findViewById(R.id.imageView_picture2);
         if (position < itemList_second.size()) {
-            final Product_Item second_item= itemList_second2.get(position);
+            final Product second_item= itemList_second2.get(position);
             textView_name2.setText(String.valueOf(itemList_second.get(position).getName() + " / " + itemList_second.get(position).getNumber()));
             imageView_picture2.setImageDrawable(itemList_second.get(position).getPicture());
             imageView_picture2.setOnClickListener(new View.OnClickListener() {
@@ -122,7 +122,7 @@ class FridgeCategory_Adapter extends BaseAdapter  {
         return satirView;
     }
 
-    private void showDialog(final Product_Item item) {
+    private void showDialog(final Product item) {
         final Dialog dialog = new Dialog(activity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
