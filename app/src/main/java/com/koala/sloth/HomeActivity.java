@@ -40,14 +40,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        queue = Volley.newRequestQueue(this);
+        /*queue = Volley.newRequestQueue(this);
         connP = new ServerConnectionForProduct(queue);
         connO = new ServerConnectionForOrder(queue);
         od = new OrdersDao(this);
         pd = new ProductDao(this);
 
         connP.returnAllProduct();
-        connO.returnAllOrder();
+        connO.returnAllOrder();*/
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -97,25 +97,16 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             Intent intent = new Intent(getApplicationContext(), ActivityOrder.class);
             startActivity(intent);
         }
-        else if (id == R.id.nav_cameras) {
-            Toast.makeText(getApplicationContext(), "Forth", Toast.LENGTH_SHORT).show();
-        }
         else if (id == R.id.nav_history) {
             Intent intent = new Intent(getApplicationContext(), ActivityHistory.class);
             startActivity(intent);
         }
-        else if (id == R.id.nav_help) {
-            Toast.makeText(getApplicationContext(), "Sixth", Toast.LENGTH_SHORT).show();
-        }
         else if (id == R.id.nav_settings) {
             Toast.makeText(getApplicationContext(), "Seventh", Toast.LENGTH_SHORT).show();
         }
-        else if (id == R.id.nav_info) {
-            Toast.makeText(getApplicationContext(), "Eighth", Toast.LENGTH_SHORT).show();
-        }
         else if (id == R.id.loadExampleDatabase) {
-            new ProductDao(getApplicationContext());
-            new OrdersDao(getApplicationContext());
+            new ProductDao(getApplicationContext()).implementExampleDatabase();
+            new OrdersDao(getApplicationContext()).implementExampleDatabase();
         }
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

@@ -1,10 +1,8 @@
 package com.koala.sloth.TabFridge;
 
-import com.koala.sloth.Database.Dao.Item.Product;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.graphics.Point;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -20,6 +18,7 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.koala.sloth.Database.Dao.Item.Product;
 import com.koala.sloth.R;
 import com.koala.sloth.Shared.Constant;
 
@@ -27,65 +26,49 @@ import java.util.ArrayList;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
-class FridgeCategory_Adapter extends BaseAdapter  {
+class Product_ListView_Adapter extends BaseAdapter {
     private final Activity activity;
     private final LayoutInflater inflater;
 
-    private final ArrayList<FridgeCategory_Item> itemList_first;
-    private final ArrayList<FridgeCategory_Item> itemList_second;
-    private final ArrayList<Product> itemList_first2;
-    private final ArrayList<Product> itemList_second2;
+    private final ArrayList<Product> itemList_first;
+    private final ArrayList<Product> itemList_second;
 
 
-    FridgeCategory_Adapter(Activity activityP, ArrayList<FridgeCategory_Item> itemListP,ArrayList<Product> itemListP2) {
+
+    Product_ListView_Adapter(Activity activityP, ArrayList<Product> itemListP) {
         activity = activityP;
-        inflater = (LayoutInflater) activityP.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        inflater = (LayoutInflater) activityP.getSystemService(LAYOUT_INFLATER_SERVICE);
 
         itemList_first = new ArrayList<>();
         itemList_second= new ArrayList<>();
-        itemList_first2 = new ArrayList<>();
-        itemList_second2= new ArrayList<>();
 
         for (int i = 0; i< itemListP.size(); i++) {
-            if (i%2 == 0) {
+            if (i%2 == 0)
                 itemList_first.add(itemListP.get(i));
-                itemList_first2.add(itemListP2.get(i));
-            }
-            else {
+            else
                 itemList_second.add(itemListP.get(i));
-                itemList_second2.add(itemListP2.get(i));
-            }
         }
     }
 
-    public int getCount() {
-        return itemList_first.size();
-    }
-
-    public Object getItem(int position) {
+    public Product getItem(int position) {
         return itemList_first.get(position);
     }
-
-    public long getItemId(int position) {
-        return position;
-    }
-
-
     @SuppressLint("InflateParams")
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         View satirView;
         if (convertView!=null && ((TextView)convertView.findViewById(R.id.textView_name1)).getText().toString().equals(itemList_first.get(position).getName()))
             satirView = convertView;
         else
-            satirView = inflater.inflate(R.layout.activity_fridge_category_row, null);
+            satirView = inflater.inflate(R.layout.activity_order_product_row, null);
 
-        final Product first_item= itemList_first2.get(position);
 
-        final TextView textView_name1 = satirView.findViewById(R.id.textView_name1);
-        textView_name1.setText(String.valueOf(itemList_first.get(position).getName() + " / " + itemList_first.get(position).getNumber()));
+        final Product first_item= itemList_first.get(position);
+
+        TextView textView_name1 = satirView.findViewById(R.id.textView_name1);
+        textView_name1.setText(first_item.getName());
 
         ImageView imageView_picture1 = satirView.findViewById(R.id.imageView_picture1);
-        imageView_picture1.setImageDrawable(itemList_first.get(position).getPicture());
+        imageView_picture1.setImageBitmap(first_item.getPicture());
         imageView_picture1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,12 +76,20 @@ class FridgeCategory_Adapter extends BaseAdapter  {
             }
         });
 
-        final TextView textView_name2 = satirView.findViewById(R.id.textView_name2);
+        TextView textView_pricePerUnit1 = satirView.findViewById(R.id.textView_pricePerUnit1);
+        textView_pricePerUnit1.setText(String.valueOf(first_item.getPrice() +" "+ first_item.getPriceUnit()  +"/"+ first_item.getPhysicalUnit()));
+
+
+        TextView textView_name2 = satirView.findViewById(R.id.textView_name2);
         ImageView imageView_picture2 = satirView.findViewById(R.id.imageView_picture2);
+        TextView textView_pricePerUnit2 = satirView.findViewById(R.id.textView_pricePerUnit2);
         if (position < itemList_second.size()) {
-            final Product second_item= itemList_second2.get(position);
-            textView_name2.setText(String.valueOf(itemList_second.get(position).getName() + " / " + itemList_second.get(position).getNumber()));
-            imageView_picture2.setImageDrawable(itemList_second.get(position).getPicture());
+            final Product second_item= itemList_second.get(position);
+
+            textView_name2.setText(second_item.getName());
+            textView_pricePerUnit2.setText(String.valueOf(second_item.getPrice() +" "+ second_item.getPriceUnit() +"/"+ second_item.getPhysicalUnit()));
+
+            imageView_picture2.setImageBitmap(second_item.getPicture());
             imageView_picture2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -111,6 +102,7 @@ class FridgeCategory_Adapter extends BaseAdapter  {
             imageView_picture2.setVisibility(View.INVISIBLE);
         }
 
+
         Display display = activity.getWindowManager().getDefaultDisplay();
         Point temp = new Point();
         display.getSize(temp);
@@ -118,8 +110,13 @@ class FridgeCategory_Adapter extends BaseAdapter  {
         imageView_picture1.setLayoutParams(new FrameLayout.LayoutParams(temp.x/2, temp.x/3));
         imageView_picture2.setLayoutParams(new FrameLayout.LayoutParams(temp.x/2, temp.x/3));
 
-
         return satirView;
+    }
+    public long getItemId(int position) {
+        return position;
+    }
+    public int getCount() {
+        return itemList_first.size();
     }
 
     private void showDialog(final Product item) {

@@ -55,7 +55,7 @@ class History_Adapter extends BaseAdapter {
         TextView textView_totalPrice = satirView.findViewById(R.id.textView_totalPrice);
         textView_totalPrice.setText(String.valueOf(historyItem.getProduct().getPrice()*historyItem.getQuantity() +" "+ historyItem.getProduct().getPriceUnit()));
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm:ss dd:MM:yyyy", Locale.getDefault());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd:MM:yyyy HH:mm:ss", Locale.getDefault());
         TextView textView_date = satirView.findViewById(R.id.textView_date);
         textView_date.setText(simpleDateFormat.format(historyItem.getDate()));
 

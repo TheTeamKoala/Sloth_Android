@@ -45,7 +45,7 @@ public class OrdersDao {
                 int quantity = cursor.getInt(cursor.getColumnIndex("QUANTITY"));
                 long date = cursor.getLong(cursor.getColumnIndex("DATE"));
 
-                arrayList.add(new Order(productId, quantity, date,null));
+                arrayList.add(new Order(productId, quantity, date, productDao.getOrderById(productId)));
 
                 cursor.moveToNext();
             }
@@ -56,7 +56,8 @@ public class OrdersDao {
         return arrayList;
     }
 
-    public void implementExampleDatabase() {    // ORNEK BIR DATABASE OLUSTURMAK ICIN SADECE BIR KERE CAGRILDI.
+    public void implementExampleDatabase() {    // ORNEK BIR DATABASE OLUSTURMAK ICIN CAGRILIYOR.
+        DatabaseHelper.getInstance(context).getWritableDatabase().delete("ORDERS", null,null);
         addOrder(1, 2, 1551615240120L);
         addOrder(5, 3, 1551615240120L);
         addOrder(7, 1, 1549215962160L);

@@ -22,11 +22,6 @@ public class ActivityHistory extends AppCompatActivity {
     public void onBackPressed() {
         finish();
     }
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.order, menu);
-
-        return true;
-    }
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 

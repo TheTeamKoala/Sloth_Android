@@ -232,7 +232,6 @@ public class ActivityOrder extends AppCompatActivity {
 
         return arrayList_item;
     }
-
     public void setProductAdapter(String categoryName) {
         ProductDao ordersDao = new ProductDao(getApplicationContext());
         listView.setAdapter(new Product_ListView_Adapter(ActivityOrder.this, ordersDao.getOrderProductList(categoryName)));
