@@ -4,7 +4,9 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.ListView;
 
+import com.koala.sloth.Database.Dao.ProductDao;
 import com.koala.sloth.R;
 
 
@@ -34,6 +36,9 @@ public class  ActivityFridge extends AppCompatActivity {
     }
 
     private void load() {
+        ListView listView = findViewById(R.id.listView_fridge);
+        listView.setAdapter(new Product_ListView_Adapter(this, new ProductDao(getApplicationContext()).getFridgeProductList()));
+
         ActionBar actionBar = getSupportActionBar();
         if (actionBar !=null) {
             actionBar.setTitle("Fridge");

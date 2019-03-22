@@ -22,7 +22,9 @@ import com.koala.sloth.Database.Dao.Item.Product;
 import com.koala.sloth.R;
 import com.koala.sloth.Shared.Constant;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
@@ -62,6 +64,8 @@ class Product_ListView_Adapter extends BaseAdapter {
             satirView = inflater.inflate(R.layout.activity_order_product_row, null);
 
 
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd:MM:yyyy HH:mm:ss", Locale.getDefault());
+
         final Product first_item= itemList_first.get(position);
 
         TextView textView_name1 = satirView.findViewById(R.id.textView_name1);
@@ -69,15 +73,9 @@ class Product_ListView_Adapter extends BaseAdapter {
 
         ImageView imageView_picture1 = satirView.findViewById(R.id.imageView_picture1);
         imageView_picture1.setImageBitmap(first_item.getPicture());
-        imageView_picture1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDialog(first_item);
-            }
-        });
 
         TextView textView_pricePerUnit1 = satirView.findViewById(R.id.textView_pricePerUnit1);
-        textView_pricePerUnit1.setText(String.valueOf(first_item.getPrice() +" "+ first_item.getPriceUnit()  +"/"+ first_item.getPhysicalUnit()));
+        textView_pricePerUnit1.setText(simpleDateFormat.format(first_item.getFirstDate()));
 
 
         TextView textView_name2 = satirView.findViewById(R.id.textView_name2);
@@ -87,15 +85,8 @@ class Product_ListView_Adapter extends BaseAdapter {
             final Product second_item= itemList_second.get(position);
 
             textView_name2.setText(second_item.getName());
-            textView_pricePerUnit2.setText(String.valueOf(second_item.getPrice() +" "+ second_item.getPriceUnit() +"/"+ second_item.getPhysicalUnit()));
-
+            textView_pricePerUnit2.setText(simpleDateFormat.format(second_item.getFirstDate()));
             imageView_picture2.setImageBitmap(second_item.getPicture());
-            imageView_picture2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showDialog(second_item);
-                }
-            });
         }
         else {
             textView_name2.setVisibility(View.INVISIBLE);
@@ -117,67 +108,6 @@ class Product_ListView_Adapter extends BaseAdapter {
     }
     public int getCount() {
         return itemList_first.size();
-    }
-
-    private void showDialog(final Product item) {
-        final Dialog dialog = new Dialog(activity);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(true);
-
-        final LayoutInflater inflater = (LayoutInflater) activity.getSystemService(LAYOUT_INFLATER_SERVICE);
-        assert inflater != null;
-        final View layout = inflater.inflate(R.layout.dialog_order_no, (ViewGroup) activity.findViewById(R.id.linearLayout_dialog));
-
-
-        final TextView textView_product = layout.findViewById(R.id.textView_product);
-        final TextView textView_price = layout.findViewById(R.id.textView_price);
-        final TextView textView_totalPrice = layout.findViewById(R.id.textView_totalPrice);
-        textView_product.setText(String.valueOf("Product: "+ item.getName()));
-        textView_price.setText(String.valueOf("Price: "+ item.getPrice() +" "+ item.getPriceUnit()+"/"+ item.getPhysicalUnit()));
-        textView_totalPrice.setText(String.valueOf("Total Price: "+ item.getPrice()));
-
-        final NumberPicker numberPicker_order = layout.findViewById(R.id.numberPicker_order);
-        numberPicker_order.setMinValue(1);
-        numberPicker_order.setMaxValue(10);
-        numberPicker_order.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                textView_totalPrice.setText(String.valueOf("Total Price: "+ newVal*item.getPrice()));
-            }
-        });
-
-
-        Button button_cancel = layout.findViewById(R.id.button_cancel);
-        button_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
-        Button button_ok = layout.findViewById(R.id.button_ok);
-        button_ok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                item.setQuantity(numberPicker_order.getValue());
-
-                Constant.addItemToBasket(item);
-
-                Toast.makeText(activity, "Your order has been added to your basket.", Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
-            }
-        });
-
-
-        Display display = activity.getWindowManager().getDefaultDisplay();
-        Point temp = new Point();
-        display.getSize(temp);
-
-        LinearLayout linearLayout_buttons = layout.findViewById(R.id.linearLayout_buttons);
-        linearLayout_buttons.setLayoutParams(new LinearLayout.LayoutParams((temp.x/2), ViewGroup.LayoutParams.WRAP_CONTENT));
-
-        dialog.setContentView(layout);
-        dialog.show();
     }
 
 }

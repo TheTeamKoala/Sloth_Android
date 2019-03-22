@@ -58,6 +58,7 @@ public class OrdersDao {
 
     public void implementExampleDatabase() {    // ORNEK BIR DATABASE OLUSTURMAK ICIN CAGRILIYOR.
         DatabaseHelper.getInstance(context).getWritableDatabase().delete("ORDERS", null,null);
+
         addOrder(1, 2, 1551615240120L);
         addOrder(5, 3, 1551615240120L);
         addOrder(7, 1, 1549215962160L);
