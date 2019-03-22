@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.koala.sloth.Database.Dao.Item.Product;
 import com.koala.sloth.R;
 import com.koala.sloth.Shared.Constant;
+import com.koala.sloth.Shared.Methods;
 
 import java.util.ArrayList;
 
@@ -59,12 +60,12 @@ class Basket_ListView_Adapter extends BaseAdapter {
             textView_name.setText(spannableString);
 
             TextView textView_number = satirView.findViewById(R.id.textView_number);
-            spannableString = new SpannableString("Total Quantity: " + Constant.getTotalQuantity());
+            spannableString = new SpannableString("Total Quantity: " + Methods.getTotalQuantity());
             spannableString.setSpan(new ForegroundColorSpan(Color.parseColor("#D81B60")), 0, 15, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textView_number.setText(spannableString);
 
             TextView textView_totalPrice = satirView.findViewById(R.id.textView_totalPrice);
-            spannableString = new SpannableString("Total Price: " + Constant.getTotalPrice());
+            spannableString = new SpannableString("Total Price: " + Methods.getTotalPrice());
             spannableString.setSpan(new ForegroundColorSpan(Color.parseColor("#D81B60")), 0, 13, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textView_totalPrice.setText(spannableString);
 
@@ -111,7 +112,7 @@ class Basket_ListView_Adapter extends BaseAdapter {
         button_remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Constant.removeItemToBasket(item.getName());
+                Methods.removeItemToBasket(item.getName());
                 basketListViewAdapter.notifyDataSetChanged();
             }
         });

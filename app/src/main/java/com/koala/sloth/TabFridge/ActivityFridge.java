@@ -26,13 +26,10 @@ public class  ActivityFridge extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == android.R.id.home) {
-            cancelFromCategory();
+            finish();
         }
 
         return super.onOptionsItemSelected(item);
-    }
-    private void cancelFromCategory() {
-            finish();
     }
 
     private void load() {

@@ -20,7 +20,7 @@ import android.widget.Toast;
 
 import com.koala.sloth.Database.Dao.Item.Product;
 import com.koala.sloth.R;
-import com.koala.sloth.Shared.Constant;
+import com.koala.sloth.Shared.Methods;
 
 import java.util.ArrayList;
 
@@ -161,7 +161,7 @@ class Product_ListView_Adapter extends BaseAdapter {
             public void onClick(View v) {
                 item.setQuantity(numberPicker_order.getValue());
 
-                Constant.addItemToBasket(item);
+                Methods.addItemToBasket(item);
 
                 Toast.makeText(activity, "Your order has been added to your basket.", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();

@@ -28,6 +28,7 @@ import com.koala.sloth.Database.Dao.Item.Order;
 import com.koala.sloth.Database.Dao.Item.Product;
 import com.koala.sloth.Database.Dao.OrdersDao;
 import com.koala.sloth.Database.Dao.ProductDao;
+import com.koala.sloth.Shared.Methods;
 import com.koala.sloth.TabFridge.ActivityFridge;
 import com.koala.sloth.TabHistory.ActivityHistory;
 import com.koala.sloth.TabOrder.ActivityOrder;
@@ -38,6 +39,8 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    private NavigationView navigationView;
+
     RequestQueue queue ;
     static ServerConnectionForProduct connP ;
     static ServerConnectionForOrder connO ;
@@ -71,7 +74,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         final EditText editText_findProduct = findViewById(R.id.editText_findProduct);
@@ -127,6 +130,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 return false;
             }
         });
+
+        new Methods().scheduleAlarmController(getApplicationContext());
+    }
+    protected void onResume() {
+        super.onResume();
+
+        navigationView.getMenu().getItem(0).setChecked(true);
     }
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -139,10 +149,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.nav_home) {
-            Toast.makeText(getApplicationContext(), "First", Toast.LENGTH_SHORT).show();
-        }
-        else if (id == R.id.nav_fridge) {
+        if (id == R.id.nav_fridge) {
             Intent intent = new Intent(getApplicationContext(), ActivityFridge.class);
             startActivity(intent);
         }
@@ -154,13 +161,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             Intent intent = new Intent(getApplicationContext(), ActivityHistory.class);
             startActivity(intent);
         }
-        else if (id == R.id.nav_settings) {
-            Toast.makeText(getApplicationContext(), "Seventh", Toast.LENGTH_SHORT).show();
-        }
         else if (id == R.id.loadExampleDatabase) {
             new ProductDao(getApplicationContext()).implementExampleDatabase();
             new OrdersDao(getApplicationContext()).implementExampleDatabase();
         }
+        else if (id == R.id.loadExampleDatabase2) {
+            new ProductDao(getApplicationContext()).implementExampleDatabase2();
+        }
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
 

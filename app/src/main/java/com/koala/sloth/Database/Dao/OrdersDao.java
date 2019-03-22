@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.koala.sloth.Database.Dao.Item.Order;
+import com.koala.sloth.Database.Dao.Item.Product;
 import com.koala.sloth.Database.DatabaseHelper;
 
 import java.util.ArrayList;
@@ -46,7 +47,9 @@ public class OrdersDao {
                 int quantity = cursor.getInt(cursor.getColumnIndex("QUANTITY"));
                 long date = cursor.getLong(cursor.getColumnIndex("DATE"));
 
-                arrayList.add(new Order(productId, quantity, date, productDao.getProductById(productId)));
+                Product product = productDao.getProductById(productId);
+                if (product!=null)
+                    arrayList.add(new Order(productId, quantity, date, product));
 
                 cursor.moveToNext();
             }
@@ -59,6 +62,7 @@ public class OrdersDao {
 
     public void implementExampleDatabase() {    // ORNEK BIR DATABASE OLUSTURMAK ICIN CAGRILIYOR.
         DatabaseHelper.getInstance(context).getWritableDatabase().delete("ORDERS", null,null);
+        DatabaseHelper.getInstance(context).resetAutoIncrementOrders();
 
         addOrder(1, 2, 1551615240120L);
         addOrder(5, 3, 1551615240120L);

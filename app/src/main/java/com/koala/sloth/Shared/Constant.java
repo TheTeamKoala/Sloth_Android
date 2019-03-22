@@ -16,45 +16,6 @@ public class Constant {
     public static final String ORDER_CATEGORY_CLEANING = "Cleaning";
 
     public static String currentOrderCategory = "";
-
     public static ArrayList<Product> basket;
-    public static void addItemToBasket(Product newItem) {
-        for (Product item: basket) {
-            if (item.getName().equals(newItem.getName())) {
-                item.setQuantity(newItem.getQuantity());
-                return;
-            }
-        }
-
-        basket.add(newItem);
-    }
-    public static void removeItemToBasket(String itemName) {
-        Product item = null;
-        for (Product product_item: basket) {
-            if (product_item.getName().equals(itemName)) {
-                item = product_item;
-                break;
-            }
-        }
-
-        if (item!=null)
-            basket.remove(item);
-    }
-    public static int getTotalQuantity() {
-        int totalQuantity = 0;
-        for (Product product_item: basket) {
-            totalQuantity = totalQuantity + product_item.getQuantity();
-        }
-
-        return totalQuantity;
-    }
-    public static double getTotalPrice() {
-        double totalPrice = 0;
-        for (Product product_item: basket) {
-            totalPrice = totalPrice + product_item.getQuantity()*product_item.getPrice();
-        }
-
-        return totalPrice;
-    }
 
 }

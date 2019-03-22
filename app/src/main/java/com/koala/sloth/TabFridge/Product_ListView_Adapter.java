@@ -3,6 +3,7 @@ package com.koala.sloth.TabFridge;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -31,6 +32,7 @@ import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 class Product_ListView_Adapter extends BaseAdapter {
     private final Activity activity;
     private final LayoutInflater inflater;
+    private final SharedPreferences sharedPreferences;
 
     private final ArrayList<Product> itemList_first;
     private final ArrayList<Product> itemList_second;
@@ -40,6 +42,7 @@ class Product_ListView_Adapter extends BaseAdapter {
     Product_ListView_Adapter(Activity activityP, ArrayList<Product> itemListP) {
         activity = activityP;
         inflater = (LayoutInflater) activityP.getSystemService(LAYOUT_INFLATER_SERVICE);
+        sharedPreferences = activity.getApplicationContext().getSharedPreferences("settings", 0);
 
         itemList_first = new ArrayList<>();
         itemList_second= new ArrayList<>();
@@ -73,6 +76,20 @@ class Product_ListView_Adapter extends BaseAdapter {
 
         ImageView imageView_picture1 = satirView.findViewById(R.id.imageView_picture1);
         imageView_picture1.setImageBitmap(first_item.getPicture());
+        imageView_picture1.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                String name = itemList_first.get(position).getName();
+                String controlProducts = sharedPreferences.getString("controlProducts", "");
+
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("controlProducts", controlProducts + name +"%");
+                editor.apply();
+
+                Toast.makeText(activity, name +" is added to the controller list!", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
 
         TextView textView_pricePerUnit1 = satirView.findViewById(R.id.textView_pricePerUnit1);
         textView_pricePerUnit1.setText(simpleDateFormat.format(first_item.getFirstDate()));
@@ -87,6 +104,20 @@ class Product_ListView_Adapter extends BaseAdapter {
             textView_name2.setText(second_item.getName());
             textView_pricePerUnit2.setText(simpleDateFormat.format(second_item.getFirstDate()));
             imageView_picture2.setImageBitmap(second_item.getPicture());
+            imageView_picture2.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    String name = itemList_second.get(position).getName();
+                    String controlProducts = sharedPreferences.getString("controlProducts", "");
+
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("controlProducts", controlProducts + name +"%");
+                    editor.apply();
+
+                    Toast.makeText(activity, name +" is added to the controller list!", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+            });
         }
         else {
             textView_name2.setVisibility(View.INVISIBLE);

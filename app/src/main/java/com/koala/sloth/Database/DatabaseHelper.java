@@ -50,5 +50,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 	}
 
+	public void resetAutoIncrementProduct() {
+		String RESET_PRODUCT = "UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE NAME='PRODUCT'";
+		getWritableDatabase().execSQL(RESET_PRODUCT);
+	}
+
+	public void resetAutoIncrementOrders() {
+		String RESET_ORDERS = "UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE NAME='ORDERS'";
+		getWritableDatabase().execSQL(RESET_ORDERS);
+	}
 
 }
