@@ -1,6 +1,8 @@
 package com.koala.sloth;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -9,13 +11,19 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Menu;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
 import com.koala.sloth.Database.Dao.Item.Order;
 import com.koala.sloth.Database.Dao.Item.Product;
 import com.koala.sloth.Database.Dao.OrdersDao;
@@ -25,7 +33,9 @@ import com.koala.sloth.TabHistory.ActivityHistory;
 import com.koala.sloth.TabOrder.ActivityOrder;
 import  com.koala.sloth.ServerConnection.*;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     RequestQueue queue ;
@@ -33,22 +43,25 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     static ServerConnectionForOrder connO ;
     static ArrayList<com.koala.sloth.ServerConnection.Product> serverProd;
     static ArrayList<com.koala.sloth.ServerConnection.Order> serverOrder;
-    static  OrdersDao od ;
-    static  ProductDao pd ;
+    static  OrdersDao ordersDao ;
+    static  ProductDao productDao ;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        ordersDao = new OrdersDao(this);
+        productDao = new ProductDao(this);
+
         /*queue = Volley.newRequestQueue(this);
         connP = new ServerConnectionForProduct(queue);
         connO = new ServerConnectionForOrder(queue);
-        od = new OrdersDao(this);
-        pd = new ProductDao(this);
 
         connP.returnAllProduct();
         connO.returnAllOrder();*/
-
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -60,6 +73,60 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        final EditText editText_findProduct = findViewById(R.id.editText_findProduct);
+        editText_findProduct.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction()!=KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                    if (editText_findProduct.getText().toString().equals("")) {
+                        return true;
+                    }
+
+                    Product product = productDao.getProductByName(editText_findProduct.getText().toString());
+
+                    final Dialog dialog = new Dialog(HomeActivity.this);
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialog.setCancelable(true);
+                    dialog.setContentView(R.layout.dialog_find_product);
+
+                    TextView textView_name = dialog.findViewById(R.id.textView_name);
+                    TextView textView_date = dialog.findViewById(R.id.textView_date);
+                    if (product == null) {
+                        String text = "Wrong product name!";
+                        textView_name.setText(text);
+                        textView_date.setVisibility(View.INVISIBLE);
+                    }
+                    else {
+                        if (product.isInFridge() == 1) {
+                            SpannableString spannableString = new SpannableString("You have " + product.getName() + " in the fridge.");
+                            spannableString.setSpan(new ForegroundColorSpan(Color.RED), 4, 9 + product.getName().length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                            textView_name.setText(spannableString);
+
+                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd:MM:yyyy HH:mm:ss", Locale.getDefault());
+                            textView_date.setText(String.valueOf("First seen: " + simpleDateFormat.format(product.getFirstDate())));
+                        } else {
+                            SpannableString spannableString = new SpannableString("You don't have " + product.getName() + " in the fridge.");
+                            spannableString.setSpan(new ForegroundColorSpan(Color.RED), 4, 15 + product.getName().length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                            textView_name.setText(spannableString);
+
+                            textView_date.setVisibility(View.INVISIBLE);
+                        }
+                    }
+
+                    Button button_ok = dialog.findViewById(R.id.button_ok);
+                    button_ok.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    dialog.show();
+                }
+
+                return false;
+            }
+        });
     }
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -68,20 +135,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         } else {
             super.onBackPressed();
         }
-    }
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.home, menu);
-
-        return true;
-    }
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
@@ -114,14 +167,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-    }
-
     public static  void sencProducts(){
-        ArrayList<Product> products = pd.getProductList();
+        ArrayList<Product> products = productDao.getProductList();
         serverProd = connP.products;
 
         ArrayList<com.koala.sloth.ServerConnection.Product> diff = new ArrayList<>();
@@ -133,10 +180,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 if(temp.getId()==temp2.getId()){
                     if(temp.getInFridge()!=temp2.isInFridge()){
                         if(temp.getInFridge()==1){
-                             pd.addToFridge(temp2.getId());
+                             productDao.addToFridge(temp2.getId());
                         }
                         else{
-                            pd.removeFromFridge(temp2.getId());
+                            productDao.removeFromFridge(temp2.getId());
                         }
 
                     }
@@ -166,13 +213,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
              else{
                  inFridge=false;
              }
-             pd.addOrderProduct(name,brand,category,price,priceUnit,physicalUnit,firstDate,inFridge,null);
+             productDao.addOrderProduct(name,brand,category,price,priceUnit,physicalUnit,firstDate,inFridge,null);
 
         }
     }
-
     public static  void sencOrders(){
-        ArrayList<Order> orders = od.getOrderList();
+        ArrayList<Order> orders = ordersDao.getOrderList();
         serverOrder = connO.orders;
 
         ArrayList<com.koala.sloth.ServerConnection.Order> diff = new ArrayList<>();
@@ -197,7 +243,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             Integer quantity=get.getQuantity();
             long date=get.getDate();
 
-            od.addOrder(productId,quantity,date);
+            ordersDao.addOrder(productId,quantity,date);
         }
     }
 

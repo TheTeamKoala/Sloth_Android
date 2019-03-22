@@ -52,7 +52,7 @@ public class ProductDao {
         db.close();
     }
 
-    public Product getOrderById(int Id) {
+    public Product getProductById(int Id) {
         ArrayList<Product> arrayList = new ArrayList<>();
 
         SQLiteDatabase db = DatabaseHelper.getInstance(context).getReadableDatabase();
@@ -82,6 +82,33 @@ public class ProductDao {
 
         return product;
     }
+
+    public Product getProductByName(String name) {
+        ArrayList<Product> arrayList = new ArrayList<>();
+
+        SQLiteDatabase db = DatabaseHelper.getInstance(context).getReadableDatabase();
+        Cursor  cursor = db.rawQuery("SELECT * FROM PRODUCT WHERE NAME = ?", new String[] { name });
+
+        Product product = null;
+        if (cursor.moveToFirst()) {
+            int id = cursor.getInt(cursor.getColumnIndex("ID"));
+            String brand = cursor.getString(cursor.getColumnIndex("BRAND"));
+            String category = cursor.getString(cursor.getColumnIndex("CATEGORY"));
+            float price = cursor.getFloat(cursor.getColumnIndex("PRICE"));
+            String priceUnit = cursor.getString(cursor.getColumnIndex("PRICE_UNIT"));
+            String physicalUnit = cursor.getString(cursor.getColumnIndex("PHYSICAL_UNIT"));
+            long firstDate = cursor.getLong(cursor.getColumnIndex("FIRST_DATE"));
+            int inFridge = cursor.getInt(cursor.getColumnIndex("IN_FRIDGE"));
+            byte picture[] = cursor.getBlob(cursor.getColumnIndex("PICTURE"));
+            product = new Product(id, name, brand, category, price, priceUnit, physicalUnit, firstDate, inFridge, getImage(picture));
+            cursor.moveToNext();
+        }
+        cursor.close();
+        db.close();
+
+        return product;
+    }
+
     public ArrayList<Product> getProductList() {
         ArrayList<Product> arrayList = new ArrayList<>();
 
@@ -112,14 +139,6 @@ public class ProductDao {
         return arrayList;
     }
 
-    public void addToFridge(int id1){
-        SQLiteDatabase db = DatabaseHelper.getInstance(context).getReadableDatabase();
-        db.execSQL("UPDATE PRODUCT SET IN_FRIDGE=1  WHERE id="+id1);
-    }
-    public void removeFromFridge(int id1){
-        SQLiteDatabase db = DatabaseHelper.getInstance(context).getReadableDatabase();
-        db.execSQL("UPDATE PRODUCT SET IN_FRIDGE=0  WHERE id="+id1);
-    }
     public ArrayList<Product> getOrderProductList(String categoryName) {
         ArrayList<Product> arrayList = new ArrayList<>();
 
@@ -149,6 +168,7 @@ public class ProductDao {
 
         return arrayList;
     }
+
     public ArrayList<Product> getFridgeProductList() {
         ArrayList<Product> arrayList = new ArrayList<>();
 
@@ -213,7 +233,17 @@ public class ProductDao {
         return arrayList;
     }
 
-   public void implementExampleDatabase() {    // ORNEK BIR DATABASE OLUSTURMAK ICIN CAGRILIYOR.
+    public void addToFridge(int id){
+        SQLiteDatabase db = DatabaseHelper.getInstance(context).getReadableDatabase();
+        db.execSQL("UPDATE PRODUCT SET IN_FRIDGE=1  WHERE id=" + id);
+    }
+
+    public void removeFromFridge(int id){
+        SQLiteDatabase db = DatabaseHelper.getInstance(context).getReadableDatabase();
+        db.execSQL("UPDATE PRODUCT SET IN_FRIDGE=0  WHERE id="+id);
+    }
+
+    public void implementExampleDatabase() {    // ORNEK BIR DATABASE OLUSTURMAK ICIN CAGRILIYOR.
         DatabaseHelper.getInstance(context).getWritableDatabase().delete("PRODUCT", null,null);
 
         addOrderProduct("Apple", null,"Fruit", 2.00, "TL", "kg", 1551215240120L, true, getDrawableAsByteArray(R.drawable.apple));
@@ -271,6 +301,7 @@ public class ProductDao {
         bitmap.compress(Bitmap.CompressFormat.PNG, 0, outputStream);
         return outputStream.toByteArray();
     }
+
     private Bitmap getImage(byte[] image) {
         return BitmapFactory.decodeByteArray(image, 0, image.length);
     }

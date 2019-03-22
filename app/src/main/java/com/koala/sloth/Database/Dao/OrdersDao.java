@@ -16,6 +16,7 @@ public class OrdersDao {
     private ProductDao productDao;
 
 
+
     public OrdersDao(Context contextP) {
         context = contextP;
         productDao = new ProductDao(contextP);
@@ -45,7 +46,7 @@ public class OrdersDao {
                 int quantity = cursor.getInt(cursor.getColumnIndex("QUANTITY"));
                 long date = cursor.getLong(cursor.getColumnIndex("DATE"));
 
-                arrayList.add(new Order(productId, quantity, date, productDao.getOrderById(productId)));
+                arrayList.add(new Order(productId, quantity, date, productDao.getProductById(productId)));
 
                 cursor.moveToNext();
             }

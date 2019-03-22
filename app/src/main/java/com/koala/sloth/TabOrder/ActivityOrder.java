@@ -179,7 +179,7 @@ public class ActivityOrder extends AppCompatActivity {
 
         final LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         assert inflater != null;
-        final View layout = inflater.inflate(R.layout.dialog_order_find, (ViewGroup) findViewById(R.id.linearLayout_orderFind));
+        final View layout = inflater.inflate(R.layout.dialog_find_order, (ViewGroup) findViewById(R.id.linearLayout_orderFind));
 
         final EditText editText = layout.findViewById(R.id.editText_orderfind);
         Button button_cancel = layout.findViewById(R.id.button_cancel);
