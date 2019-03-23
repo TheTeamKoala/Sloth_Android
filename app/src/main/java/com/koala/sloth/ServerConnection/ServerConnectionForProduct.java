@@ -240,7 +240,8 @@ public class ServerConnectionForProduct {
                                 Log.d("intheFridge : ",products.get(i).getInFridge()+"");
 
                             }
-                            HomeActivity.sencProducts();
+                            HomeActivity a = new HomeActivity() ;
+                            a.sencProducts();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

@@ -1,7 +1,10 @@
 package com.koala.sloth;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.koala.sloth.Database.Dao.Item.Order;
 import com.koala.sloth.Database.Dao.Item.Product;
 import com.koala.sloth.Database.Dao.OrdersDao;
@@ -34,6 +39,8 @@ import com.koala.sloth.TabHistory.ActivityHistory;
 import com.koala.sloth.TabOrder.ActivityOrder;
 import  com.koala.sloth.ServerConnection.*;
 
+import java.io.ByteArrayOutputStream;
+import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -48,7 +55,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     static ArrayList<com.koala.sloth.ServerConnection.Order> serverOrder;
     static  OrdersDao ordersDao ;
     static  ProductDao productDao ;
-
+    Context c;
 
 
     @Override
@@ -58,13 +65,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         ordersDao = new OrdersDao(this);
         productDao = new ProductDao(this);
-
-        /*queue = Volley.newRequestQueue(this);
+        queue = Volley.newRequestQueue(this);
         connP = new ServerConnectionForProduct(queue);
         connO = new ServerConnectionForOrder(queue);
-
         connP.returnAllProduct();
-        connO.returnAllOrder();*/
+        connO.returnAllOrder();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -175,7 +180,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    public static  void sencProducts(){
+    public  void sencProducts(){
         ArrayList<Product> products = productDao.getProductList();
         serverProd = connP.products;
 
@@ -189,11 +194,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     if(temp.getInFridge()!=temp2.isInFridge()){
                         if(temp.getInFridge()==1){
                              productDao.addToFridge(temp2.getId());
+                             productDao.setDateProduct(temp2.getId(),temp2.getFirstDate());
                         }
                         else{
                             productDao.removeFromFridge(temp2.getId());
+                            productDao.setDateProduct(temp2.getId(),temp2.getFirstDate());
                         }
-
                     }
                     bdiff=false;
                     break;
@@ -221,7 +227,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
              else{
                  inFridge=false;
              }
-             productDao.addOrderProduct(name,brand,category,price,priceUnit,physicalUnit,firstDate,inFridge,null);
+
+             int id = getDrawableId("a"+get.getId());
+             byte [] img = productDao.getDrawableAsByteArray(id);
+             productDao.addOrderProduct(name,brand,category,price,priceUnit,physicalUnit,firstDate,inFridge,img);
 
         }
     }
@@ -253,6 +262,23 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
             ordersDao.addOrder(productId,quantity,date);
         }
+    }
+
+    public static int getDrawableId(String name) {
+        Class<?> c = R.drawable.class;
+        Field f = null;
+        int id = 0;
+
+        try {
+            f = R.drawable.class.getField(name);
+            id = f.getInt(null);
+        } catch (NoSuchFieldException e) {
+            Log.i("Reflection", "Missing drawable " + name);
+        } catch (IllegalAccessException e) {
+            Log.i("Reflection", "Illegal access to field " + name);
+        }
+
+        return id;
     }
 
 }

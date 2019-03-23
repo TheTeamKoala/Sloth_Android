@@ -13,6 +13,7 @@ public class Order {
         productId = productIdP;
         quantity = quantityP;
         date = dateP;
+
         product = productP;
     }
 
@@ -25,6 +26,7 @@ public class Order {
     public long getDate() {
         return date;
     }
+
     public Product getProduct() {
         return product;
     }
