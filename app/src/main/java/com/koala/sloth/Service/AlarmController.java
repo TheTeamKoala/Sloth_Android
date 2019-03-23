@@ -15,20 +15,37 @@ import android.os.Build;
 import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.koala.sloth.Database.Dao.Item.Product;
+import com.koala.sloth.Database.Dao.OrdersDao;
 import com.koala.sloth.Database.Dao.ProductDao;
 import com.koala.sloth.HomeActivity;
 import com.koala.sloth.R;
+import com.koala.sloth.ServerConnection.ServerConnectionForOrder;
+import com.koala.sloth.ServerConnection.ServerConnectionForProduct;
 import com.koala.sloth.Shared.Methods;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 
 
 public class AlarmController extends BroadcastReceiver {
 
+    RequestQueue queue ;
+    static ServerConnectionForProduct connP ;
+    static ServerConnectionForOrder connO ;
+    static ArrayList<com.koala.sloth.ServerConnection.Product> serverProd;
+    static ArrayList<com.koala.sloth.ServerConnection.Order> serverOrder;
+    static OrdersDao ordersDao ;
+    static  ProductDao productDao ;
 
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        sencProducts(context);
         Methods methods = new Methods();
         ProductDao productDao = new ProductDao(context);
         SharedPreferences sharedPreferences = context.getSharedPreferences("settings", 0);
@@ -112,5 +129,80 @@ public class AlarmController extends BroadcastReceiver {
                 mNotificationManager.notify(1, mBuilder.build());
         }
     }
+    public  void sencProducts(Context context){
+        ordersDao = new OrdersDao(context);
+        productDao = new ProductDao(context);
+        queue = Volley.newRequestQueue(context);
+        connP = new ServerConnectionForProduct(queue);
+        connO = new ServerConnectionForOrder(queue);
 
+        ArrayList<Product> products = productDao.getProductList();
+        serverProd = connP.products;
+
+        ArrayList<com.koala.sloth.ServerConnection.Product> diff = new ArrayList<>();
+        Boolean bdiff=true;
+        for (int i = 0 ; i<serverProd.size();i++){
+            com.koala.sloth.ServerConnection.Product temp = serverProd.get(i);
+            for (int j = 0 ; j<products.size();j++){
+                Product temp2=products.get(j);
+                if(temp.getId()==temp2.getId()){
+                    if(temp.getInFridge()!=temp2.isInFridge()){
+                        if(temp.getInFridge()==1){
+                            productDao.addToFridge(temp2.getId());
+                            productDao.setDateProduct(temp2.getId(),temp2.getFirstDate());
+                        }
+                        else{
+                            productDao.removeFromFridge(temp2.getId());
+                            productDao.setDateProduct(temp2.getId(),temp2.getFirstDate());
+                        }
+                    }
+                    bdiff=false;
+                    break;
+                }
+            }
+            if (bdiff)
+                diff.add(temp);
+            bdiff=true;
+        }
+
+        for (int i =0 ; i<diff.size();i++){
+            com.koala.sloth.ServerConnection.Product get = diff.get(i);
+            String name=get.getName();
+            String brand=get.getBrand();
+            String category=get.getCategory();
+            double price=get.getPrice();
+            String priceUnit=get.getPriceUnit();
+            String physicalUnit=get.getPhysicalUnit();
+            long firstDate=get.getFirstDate();
+            int inFridgeInt=get.getInFridge();
+            boolean inFridge=false;
+            if(inFridgeInt==1){
+                inFridge=true;
+            }
+            else{
+                inFridge=false;
+            }
+
+            int id = getDrawableId("a"+get.getId());
+            byte [] img = productDao.getDrawableAsByteArray(id);
+            productDao.addOrderProduct(name,brand,category,price,priceUnit,physicalUnit,firstDate,inFridge,img);
+
+        }
+    }
+    public static int getDrawableId(String name) {
+        Class<?> c = R.drawable.class;
+        Field f = null;
+        int id = 0;
+
+        try {
+            f = R.drawable.class.getField(name);
+            id = f.getInt(null);
+        } catch (NoSuchFieldException e) {
+            Log.i("Reflection", "Missing drawable " + name);
+        } catch (IllegalAccessException e) {
+            Log.i("Reflection", "Illegal access to field " + name);
+        }
+
+        return id;
+    }
 }

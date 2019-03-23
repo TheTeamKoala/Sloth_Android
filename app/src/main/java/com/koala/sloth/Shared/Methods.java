@@ -52,7 +52,7 @@ public class Methods {
     }
 
     public void scheduleAlarmController(Context context) {
-        long alarmTime = 60000;
+        long alarmTime = 30000;
 
         try {
             Intent intentAlarm = new Intent(context, AlarmController.class);
